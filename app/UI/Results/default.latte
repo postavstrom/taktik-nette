@@ -1,0 +1,54 @@
+{block content}
+
+    <h1>Survey Results</h1>
+
+    <form method="post">
+        <input type="text" name="name" placeholder="Filter by name" value="{$name}">
+        <select name="order">
+            <option value="name" {if $order === 'name'}selected{/if}>Name</option>
+            <option value="submitted_at" {if $order === 'submitted_at'}selected{/if}>Date</option>
+        </select>
+        <select name="direction">
+            <option value="asc" {if $direction === 'asc'}selected{/if}>Ascending</option>
+            <option value="desc" {if $direction === 'desc'}selected{/if}>Descending</option>
+        </select>
+        <button type="submit" name="action" value="apply">Apply</button>
+        <button type="submit" name="action" value="cancel">Cancel</button>
+    </form>
+
+    <table class="results-table">
+        <thead>
+        <tr>
+            <th>Name</th>
+            <th>Comments</th>
+            <th>Agreed to Terms</th>
+            <th>Interests</th>
+            <th>Date Submitted</th>
+        </tr>
+        </thead>
+        <tbody>
+        {foreach $responses as $response}
+            <tr>
+                <td>{$response->name}</td>
+                <td>{$response->comments|truncate:50}</td>
+                <td>{$response->agree_to_terms ? 'Yes' : 'No'}</td>
+                <td>{$response->interests}</td>
+                <td>{$response->submitted_at|date:'Y-m-d H:i'}</td>
+            </tr>
+        {/foreach}
+        </tbody>
+    </table>
+
+    <div class="pagination">
+        <form method="post">
+            {if $paginator->getPageCount() > 1}
+                {for $i = 1; $i <= $paginator->getPageCount(); $i++}
+                    <button type="submit" name="page" value="{$i}" {if $i === $paginator->getPage()}disabled{/if}>
+                        {$i}
+                    </button>
+                {/for}
+            {/if}
+        </form>
+    </div>
+
+{/block}
