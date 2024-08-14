@@ -1,52 +1,77 @@
-Nette Web Project
-=================
+# Nette Application
 
-Welcome to the Nette Web Project! This is a basic skeleton application built using
-[Nette](https://nette.org), ideal for kick-starting your new web projects.
+## Přehled
 
-Nette is a renowned PHP web development framework, celebrated for its user-friendliness,
-robust security, and outstanding performance. It's among the safest choices
-for PHP frameworks out there.
+Tento projekt je aplikace vyvinutá v PHP s použitím Nette frameworku. Tento návod vám pomůže s instalací a spuštěním aplikace, jakož i s testováním.
+## Požadavky
 
-If Nette helps you, consider supporting it by [making a donation](https://nette.org/donate).
-Thank you for your generosity!
+Před instalací aplikace se ujistěte, že máte nainstalovány následující nástroje:
 
+- [PHP](https://www.php.net/) (verze 7.4 nebo vyšší)
+- [Composer](https://getcomposer.org/)
+- [MySQL](https://www.mysql.com/) (nebo jiná databáze, kterou používáte)
+- [Nette Framework](https://nette.org/)
 
-Requirements
-------------
+## Instalace
 
-This Web Project is compatible with Nette 3.2 and requires PHP 8.1.
+1. **Klonování repozitáře**
 
+   Nejprve si klonujte repozitář:
 
-Installation
-------------
+   ```bash
+   git clone https://github.com/postavstrom/taktik-nette.git
+   ```
 
-To install the Web Project, Composer is the recommended tool. If you're new to Composer,
-follow [these instructions](https://doc.nette.org/composer). Then, run:
+   Přejděte do adresáře s projektem:
 
-	composer create-project nette/web-project path/to/install
-	cd path/to/install
+   ```bash
+   cd taktik-nette
+   ```
 
-Ensure the `temp/` and `log/` directories are writable.
+2. **Instalace závislostí**
 
+   Instalujte PHP závislosti pomocí Composeru:
 
-Web Server Setup
-----------------
+   ```bash
+   composer install
+   ```
 
-To quickly dive in, use PHP's built-in server:
+3. **Inicializace databáze**
 
-	php -S localhost:8000 -t www
+   Pro vytvoření potřebných tabulek v databázi spusťte následující SQL skript:
 
-Then, open `http://localhost:8000` in your browser to view the welcome page.
+   ```bash
+   CREATE TABLE survey_responses (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    name VARCHAR(255) NOT NULL,
+    comments TEXT,
+    agree_to_terms BOOLEAN NOT NULL,
+    interests TEXT);
+   ```
 
-For Apache or Nginx users, configure a virtual host pointing to your project's `www/` directory.
+   Upravte soubor config/common.neon a zadejte správné údaje pro připojení k vaší databázi.
 
-**Important Note:** Ensure `app/`, `config/`, `log/`, and `temp/` directories are not web-accessible.
-Refer to [security warning](https://nette.org/security-warning) for more details.
+4. **Spuštění aplikace**
 
+   Spusťte vestavěný PHP server:
 
-Minimal Skeleton
-----------------
+   ```bash
+   php -S localhost:8000 -t www
+   ```
+   Aplikaci si můžete otevřít v prohlížeči na http://localhost:8000.
 
-For demonstrating issues or similar tasks, rather than starting a new project, use
-this [minimal skeleton](https://github.com/nette/web-project/tree/minimal).
+5. **Testování**
+
+   Projekt používá Nette Tester. Ujistěte se, že máte nainstalovány všechny závislosti a spusťte test následujícím příkazem:
+
+   ```bash
+   php artisan serve
+   ```
+
+6. **Testování aplikace**
+
+   Aplikace obsahuje testy, které můžete spustit pomocí PHPUnit. Pro spuštění testů použijte:
+
+   ```bash
+   vendor/bin/tester tests
+   ```
